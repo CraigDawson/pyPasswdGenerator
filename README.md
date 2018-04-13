@@ -5,7 +5,7 @@ This password generator will generate https://xkcd.com/936/ passwords by default
 
 The default list for this generator has the 1000 most common words deleted.
 
-###Some proposed switches:
+### Some proposed switches:
 
 `$ pyPasswdGenerator [-s N] [-n N] [-w N] [-l M N] [-f wordlist]`
 
