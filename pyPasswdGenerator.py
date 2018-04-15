@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created : Fri 13 Apr 2018 09:46:27 PM EDT
-# Modified: Sun 15 Apr 2018 12:04:58 AM EDT
+# Modified: Sun 15 Apr 2018 01:02:01 AM EDT
 
 import better_exceptions
 
@@ -73,13 +73,27 @@ def randNumBetween(nrange):
     nrange[0] and (nrange[1] - 1)
     """
     num = 0
+    ic(nrange)
     while(num < nrange[0]):
         num = randbelow(nrange[1])
         ic(num)
     return num
 
 
-def genPasswd(words, numWords=4, nums=True, caps=True, syms=[], nrng=(10, 100)):
+def wordLen(words, wlen):
+    """
+    Return a word between the
+    lengths wlen[0] and wlen[1]
+    """
+    word = ''
+    ic(wlen)
+    while not wlen[0] <= len(word) <= wlen[1]:
+        word = choice(words)
+        ic(len(word))
+    return word
+
+
+def genPasswd(words, numWords=4, nums=True, caps=True, syms=[], nrng=(10, 100), wlen=(6,8)):
     """
     Returns password from words list
     """
@@ -87,7 +101,7 @@ def genPasswd(words, numWords=4, nums=True, caps=True, syms=[], nrng=(10, 100)):
     password = ''
 
     for i in range(numWords):
-        word = choice(words)
+        word = wordLen(words, wlen)
 
         if caps:
             word = word.capitalize()
@@ -97,7 +111,7 @@ def genPasswd(words, numWords=4, nums=True, caps=True, syms=[], nrng=(10, 100)):
         if i != numWords - 1:
             if nums:
                 num = randNumBetween(nrng)
-                password += str(nstr)
+                password += str(num)
 
             if syms:
                 # check that there are enough symbols
@@ -127,7 +141,8 @@ def main():
                              caps=False,
                              nums=True,
                              syms=[],
-                             nrng=(1000, 10000))
+                             nrng=(1000, 10000),
+                             wlen=(4,6))
         ic(password)
 
 
