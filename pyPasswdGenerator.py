@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created : Fri 13 Apr 2018 09:46:27 PM EDT
-# Modified: Mon 16 Apr 2018 11:00:43 PM EDT
+# Modified: Mon 16 Apr 2018 11:49:31 PM EDT
 
 import better_exceptions
 
@@ -94,7 +94,7 @@ def wordLen(words, wlen):
     return word
 
 
-def genPasswd(words, numWords=4, nums=True, caps=True, syms=[], nrng=(10, 100), wlen=(6,8)):
+def genPasswd(words, numWords=4, caps=True, syms=[], nrng=(10, 100), wlen=(6,8)):
     """
     Returns password from words list
     """
@@ -110,16 +110,16 @@ def genPasswd(words, numWords=4, nums=True, caps=True, syms=[], nrng=(10, 100), 
         password += word
 
         if i != numWords - 1:
-            if nums:
+            if nrng:
                 num = randNumBetween(nrng)
                 password += str(num)
 
             if syms:
                 # check that there are enough symbols
-                if len(syms) == numWords:
+                if len(syms) == numWords - 1:
                     password += syms[i]
                 else:
-                    ic('{} not {}'.format(len(syms), numWords))
+                    ic('{} not {}'.format(len(syms), numWords - 1))
 
     return password
 
@@ -132,15 +132,29 @@ def main():
 
     argparser.add_argument("-c", "--capitalize",
                            help="capitalize all words",
-                           action="store_true", default=False)
+                           default=True,
+                           action="store_true")
 
     argparser.add_argument("-w", "--numberOfWords",
-                           help="number of words to use", default=4,
+                           help="number of words to use",
+                           default=4,
                            type=int, choices=range(2, 9))
+
+    argparser.add_argument("-n", "--numberRange",
+                           help="use numbers in the range of M to N-1",
+                           default=[],
+                           type=int, nargs=2)
+
+    argparser.add_argument("-s", "--symbols",
+                           help="string of symbols to use betwwen words",
+                           default="")
+                           # TODO: validate type=validationFunction
+                           #       len(symbols) == numberOfWords-1
 
     argparser.add_argument("filename",
                            help="word list file (default: google-10000-english-usa-no-swears_modified.txt",
-                           nargs="?", default="google-10000-english-usa-no-swears_modified.txt")
+                           default="google-10000-english-usa-no-swears_modified.txt",
+                           nargs="?")
 
     args = argparser.parse_args()
 
@@ -153,9 +167,8 @@ def main():
         password = genPasswd(words,
                              numWords=args.numberOfWords,
                              caps=args.capitalize,
-                             nums=True,
-                             syms=[],
-                             nrng=(1000, 10000),
+                             syms=args.symbols,
+                             nrng=tuple(args.numberRange),
                              wlen=(4,6))
         ic(password)
         print('password:' + password)

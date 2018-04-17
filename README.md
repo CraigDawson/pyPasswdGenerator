@@ -9,7 +9,7 @@ The default list for this generator has the 1000 most common words deleted.
 
 `$ pyPasswdGenerator [-c] [-s syms] [-n M N] [-w N] [-l M N] [wordlist]`
 
-* _-c_ will capitalize each word (def: no caps)
+* _-c_ will capitalize each word (def: capitalize each word)
 * _-s syms_ will add symbols syms to password between words (def: no symbols)
 * _-n M N_ will add number between M and N-1 to password (def: no numbers)
 * _-w N_ generate a password with N words (def: N=4)
