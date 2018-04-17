@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created : Fri 13 Apr 2018 09:46:27 PM EDT
-# Modified: Mon 16 Apr 2018 10:32:32 PM EDT
+# Modified: Mon 16 Apr 2018 10:46:20 PM EDT
 
 import better_exceptions
 
@@ -125,11 +125,17 @@ def genPasswd(words, numWords=4, nums=True, caps=True, syms=[], nrng=(10, 100), 
 
 
 def main():
+
+    # TODO: validate args
+
     argparser = argparse.ArgumentParser()
 
     argparser.add_argument("-c", "--capitalize",
                            help="capitalize all words",
                            action="store_true", default=False)
+
+    argparser.add_argument("-w", "--numberOfWords",
+                           help="number of words to use", default=4)
 
     argparser.add_argument("filename",
                            help="word list file (default: google-10000-english-usa-no-swears_modified.txt",
@@ -137,14 +143,14 @@ def main():
 
     args = argparser.parse_args()
 
-    ic(args.filename)  # default '/usr/share/dict/words'
+    ic(args.filename)
 
     # On standard Linux systems, use a convenient dictionary file.
     # Other platforms may need to provide their own word-list.
     with open(args.filename) as f:
         words = [word.strip() for word in f]
         password = genPasswd(words,
-                             numWords=3,
+                             numWords=int(args.numberOfWords),
                              caps=args.capitalize,
                              nums=True,
                              syms=[],
