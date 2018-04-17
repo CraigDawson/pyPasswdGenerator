@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created : Fri 13 Apr 2018 09:46:27 PM EDT
-# Modified: Tue 17 Apr 2018 12:08:47 AM EDT
+# Modified: Tue 17 Apr 2018 05:43:35 PM EDT
 
 import better_exceptions
 
@@ -21,6 +21,7 @@ import argparse
 
 ### Begin template code -----------------------
 
+
 def baseUnixTimestamp():
     return '%s |> ' % datetime.now()
 
@@ -38,9 +39,10 @@ def baseCreateRotatingLog():
     logger.setLevel(logging.INFO)
 
     # add a rotating handler
-    handler = RotatingFileHandler(logFile,
-                                  maxBytes=10*1024*1024,  # 10MB
-                                  backupCount=5)
+    handler = RotatingFileHandler(
+        logFile,
+        maxBytes=10 * 1024 * 1024,  # 10MB
+        backupCount=5)
     logger.addHandler(handler)
 
     return logger
@@ -75,7 +77,7 @@ def randNumBetween(nrange):
     """
     num = 0
     ic(nrange)
-    while(num < nrange[0]):
+    while (num < nrange[0]):
         num = randbelow(nrange[1])
         ic(num)
     return num
@@ -94,7 +96,12 @@ def wordLen(words, wlen):
     return word
 
 
-def genPasswd(words, numWords=4, caps=True, syms=[], nrng=(10, 100), wlen=(6,8)):
+def genPasswd(words,
+              numWords=4,
+              caps=True,
+              syms=[],
+              nrng=(10, 100),
+              wlen=(6, 8)):
     """
     Returns password from words list
     """
@@ -120,65 +127,81 @@ def genPasswd(words, numWords=4, caps=True, syms=[], nrng=(10, 100), wlen=(6,8))
                     password += syms[i]
                 else:
                     ic('{} not {}'.format(len(syms), numWords - 1))
-                    print('{} symbols given, {} needed (symbols not used)'.format(len(syms), numWords - 1),
-                          file=sys.stderr)
 
     return password
 
 
 def main():
 
-    # TODO: validate args
-
     argparser = argparse.ArgumentParser()
 
-    argparser.add_argument("-c", "--capitalize",
-                           help="capitalize all words",
-                           default=True,
-                           action="store_false")
+    argparser.add_argument(
+        "-c",
+        "--capitalizeOff",
+        help="turn off capitalization for all words",
+        default=True,
+        action="store_false")
 
-    argparser.add_argument("-w", "--numberOfWords",
-                           help="number of words to use",
-                           default=4,
-                           type=int, choices=range(2, 9))
+    argparser.add_argument(
+        "-w",
+        "--numberOfWords",
+        help="number of words to use",
+        default=4,
+        type=int,
+        choices=range(2, 9))
 
-    argparser.add_argument("-n", "--numberRange",
-                           help="use numbers in the range of M to N-1",
-                           default=[],
-                           type=int, nargs=2)
+    argparser.add_argument(
+        "-n",
+        "--numberRange",
+        help="use numbers in the range of M to N-1",
+        default=[],
+        type=int,
+        nargs=2)
 
-    argparser.add_argument("-l", "--wordLengths",
-                           help="use words of lengths M to N-1",
-                           default=[6, 8],
-                           type=int, nargs=2)
+    argparser.add_argument(
+        "-l",
+        "--wordLengths",
+        help="use words of lengths M to N-1",
+        default=[6, 8],
+        type=int,
+        nargs=2)
 
-    argparser.add_argument("-s", "--symbols",
-                           help="string of symbols to use betwwen words",
-                           default="")
-                           # TODO: validate type=validationFunction
-                           #       len(symbols) == numberOfWords-1
+    argparser.add_argument(
+        "-s",
+        "--symbols",
+        help="string of symbols to use betwwen words",
+        default="")
 
-    argparser.add_argument("filename",
-                           help="word list file (default: google-10000-english-usa-no-swears_modified.txt",
-                           default="google-10000-english-usa-no-swears_modified.txt",
-                           nargs="?")
+    argparser.add_argument(
+        "filename",
+        help=
+        "word list file (default: google-10000-english-usa-no-swears_modified.txt",
+        default="google-10000-english-usa-no-swears_modified.txt",
+        nargs="?")
 
     args = argparser.parse_args()
 
     ic(args.filename)
 
+    if args.symbols and len(args.symbols) != args.numberOfWords - 1:
+        print('Error: {} symbols given, {} needed (exiting . . .)'.
+              format(len(args.symbols), args.numberOfWords - 1),
+              file=sys.stderr)
+        sys.exit(0)
+
     # On standard Linux systems, use a convenient dictionary file.
     # Other platforms may need to provide their own word-list.
     with open(args.filename) as f:
         words = [word.strip() for word in f]
-        password = genPasswd(words,
-                             numWords=args.numberOfWords,
-                             caps=args.capitalize,
-                             syms=args.symbols,
-                             nrng=tuple(args.numberRange),
-                             wlen=tuple(args.wordLengths))
+        password = genPasswd(
+            words,
+            numWords=args.numberOfWords,
+            caps=args.capitalizeOff,
+            syms=args.symbols,
+            nrng=tuple(args.numberRange),
+            wlen=tuple(args.wordLengths))
         ic(password)
-        print('password:  ' + password)
+        print('\npassword:  {}\n'.format(password))
 
 
 if __name__ == '__main__':
