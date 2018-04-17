@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created : Fri 13 Apr 2018 09:46:27 PM EDT
-# Modified: Sun 15 Apr 2018 01:02:01 AM EDT
+# Modified: Mon 16 Apr 2018 10:32:32 PM EDT
 
 import better_exceptions
 
@@ -17,6 +17,7 @@ import sys
 ### Begin non-template imports -----------------------
 
 from secrets import choice, randbelow
+import argparse
 
 ### Begin template code -----------------------
 
@@ -124,26 +125,33 @@ def genPasswd(words, numWords=4, nums=True, caps=True, syms=[], nrng=(10, 100), 
 
 
 def main():
-    try:
-        fn = sys.argv[1]
-    except IndexError:
-        print('Usage: {} file_name'.format(sys.argv[0]))
-        sys.exit(1)
+    argparser = argparse.ArgumentParser()
 
-    ic(fn)  # default '/usr/share/dict/words'
+    argparser.add_argument("-c", "--capitalize",
+                           help="capitalize all words",
+                           action="store_true", default=False)
+
+    argparser.add_argument("filename",
+                           help="word list file (default: google-10000-english-usa-no-swears_modified.txt",
+                           nargs="?", default="google-10000-english-usa-no-swears_modified.txt")
+
+    args = argparser.parse_args()
+
+    ic(args.filename)  # default '/usr/share/dict/words'
 
     # On standard Linux systems, use a convenient dictionary file.
     # Other platforms may need to provide their own word-list.
-    with open(fn) as f:
+    with open(args.filename) as f:
         words = [word.strip() for word in f]
         password = genPasswd(words,
                              numWords=3,
-                             caps=False,
+                             caps=args.capitalize,
                              nums=True,
                              syms=[],
                              nrng=(1000, 10000),
                              wlen=(4,6))
         ic(password)
+        print('password:' + password)
 
 
 if __name__ == '__main__':
