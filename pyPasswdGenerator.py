@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created : Fri 13 Apr 2018 09:46:27 PM EDT
-# Modified: Tue 17 Apr 2018 05:43:35 PM EDT
+# Modified: Tue 17 Apr 2018 08:37:25 PM EDT
 
 import better_exceptions
 
@@ -189,8 +189,6 @@ def main():
               file=sys.stderr)
         sys.exit(0)
 
-    # On standard Linux systems, use a convenient dictionary file.
-    # Other platforms may need to provide their own word-list.
     with open(args.filename) as f:
         words = [word.strip() for word in f]
         password = genPasswd(
