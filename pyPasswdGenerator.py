@@ -104,6 +104,8 @@ def genPasswd(words,
               wlen=(6, 8)):
     """
     Returns password from words list
+
+    TODO: add test code here
     """
 
     password = ''
@@ -121,7 +123,7 @@ def genPasswd(words,
                 num = randNumBetween(nrng)
                 password += str(num)
 
-            if syms:
+            if syms: # TODO: up to N-1 syms???  try/except!!!
                 # check that there are enough symbols
                 if len(syms) == numWords - 1:
                     password += syms[i]
@@ -169,7 +171,7 @@ def main():
     argparser.add_argument(
         "-s",
         "--symbols",
-        help="string of symbols to use betwwen words",
+        help="string of symbols to use between words",
         default="")
 
     argparser.add_argument(
@@ -198,8 +200,8 @@ def main():
             syms=args.symbols,
             nrng=tuple(args.numberRange),
             wlen=tuple(args.wordLengths))
-        ic(password)
-        print('\npassword:  {}\n'.format(password))
+        ic(password) # TODO: remove
+        print('\npassword:  {}\nlength: {}'.format(password, len(password)))
 
 
 if __name__ == '__main__':
