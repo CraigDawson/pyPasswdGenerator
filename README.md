@@ -5,12 +5,15 @@ This password generator will generate https://xkcd.com/936/ passwords by default
 
 The default list for this generator has the 1000 most common words deleted.
 
+Uses https://github.com/dwolfhub/zxcvbn-python to estimate password strength 
+
 ### Usage:
 
-`$ pyPasswdGenerator [-c] [-s syms] [-n M N] [-w N] [-l M N] [wordlist]`
+`$ pyPasswdGenerator [-h] [-c] [-s syms] [-n M N] [-w N] [-l M N] [wordlist]`
 
+* -h help
 * _-c_ will turn off capitalization of each word (def: capitalize each word)
-* _-s syms_ will add symbols syms to password between words (def: no symbols)
+* _-s syms_ will add symbols in syms to password between words (def: no symbols)
 * _-n M N_ will add number between M and N-1 to password (def: no numbers)
 * _-w N_ generate a password with N words (def: N=4)
 * _-l M N_ will use words between M and N in length (default M=6, N=8)
