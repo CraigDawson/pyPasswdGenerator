@@ -1,18 +1,16 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created : Fri 13 Apr 2018 09:46:27 PM EDT
-# Modified: Tue 17 Apr 2018 08:37:25 PM EDT
+# Modified: Tue 24 Apr 2018 04:27:19 PM EDT
 
 import better_exceptions
 
 import logging
-import time
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
 from icecream import ic
 
 import os
-import sys
 
 ### Begin non-template imports -----------------------
 
@@ -102,12 +100,17 @@ def genPasswd(words,
               numWords=4,
               caps=True,
               syms=[],
-              nrng=(10, 100),
+              nrng=(),
               wlen=(6, 8)):
     """
     Returns password from words list
 
-    TODO: add test code here
+    words       word list to select words from
+    numWords    number of words to use in passwd
+    caps        if True capitalize each word
+    syms        list of symbols to use between words
+    nrng        pick numbers to use between words from range
+    wlen        pick words between to lengths
     """
 
     password = ''
@@ -126,7 +129,7 @@ def genPasswd(words,
                 password += str(num)
 
             try:
-                if syms: # TODO: up to N-1 syms???
+                if syms:
                     password += syms[i]
             except Exception as e:
                 s = '{} symbols given, {} needed.'.format(len(syms), numWords - 1)
@@ -203,7 +206,7 @@ def main():
             results = zxcvbn(password)
             # pp = pprint.PrettyPrinter(indent=4)
             # pp.pprint(results)
-            
+
             print('\npassword:  {}\n\nlength: {}\n'.format(password, len(password)))
 
             print('zxcvbn analysis:')
