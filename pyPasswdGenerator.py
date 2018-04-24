@@ -1,18 +1,18 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created : Fri 13 Apr 2018 09:46:27 PM EDT
-# Modified: Tue 17 Apr 2018 08:37:25 PM EDT
+# Modified: Mon 23 Apr 2018 10:47:50 PM EDT
 
 import better_exceptions
 
 import logging
-import time
+#import time
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
 from icecream import ic
 
 import os
-import sys
+#import sys
 
 ### Begin non-template imports -----------------------
 
@@ -144,14 +144,14 @@ def main():
     argparser.add_argument(
         "-c",
         "--capitalizeOff",
-        help="turn off capitalization for all words",
+        help="turn off capitalization for all words (def: capitalize each word)",
         default=True,
         action="store_false")
 
     argparser.add_argument(
         "-w",
         "--numberOfWords",
-        help="number of words to use",
+        help="generate a password with N words (def: N=4)",
         default=4,
         type=int,
         choices=range(2, 9))
@@ -159,7 +159,7 @@ def main():
     argparser.add_argument(
         "-n",
         "--numberRange",
-        help="use numbers in the range of M to N-1",
+        help="will add numbers between M and N-1 to between words (def: no numbers)",
         default=[],
         type=int,
         nargs=2)
@@ -167,7 +167,7 @@ def main():
     argparser.add_argument(
         "-l",
         "--wordLengths",
-        help="use words of lengths M to N-1",
+        help="will use words between M and N in length (default M=6, N=8)",
         default=[6, 8],
         type=int,
         nargs=2)
@@ -175,7 +175,7 @@ def main():
     argparser.add_argument(
         "-s",
         "--symbols",
-        help="string of symbols to use between words",
+        help="will add symbol in SYMBOLS between word (def: no symbols)",
         default="")
 
     argparser.add_argument(
@@ -203,7 +203,7 @@ def main():
             results = zxcvbn(password)
             # pp = pprint.PrettyPrinter(indent=4)
             # pp.pprint(results)
-            
+
             print('\npassword:  {}\n\nlength: {}\n'.format(password, len(password)))
 
             print('zxcvbn analysis:')
