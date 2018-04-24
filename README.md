@@ -13,7 +13,7 @@ The default list for this generator has the 1000 most common words deleted.
 * _-s syms_ will add symbols syms to password between words (def: no symbols)
 * _-n M N_ will add number between M and N-1 to password (def: no numbers)
 * _-w N_ generate a password with N words (def: N=4)
-* _-l M N_ will use words between M and N in length (default M=3, N=8)
+* _-l M N_ will use words between M and N in length (default M=6, N=8)
 * _wordlist_ will use the file wordlist for the input words
 
 ### Examples:
@@ -107,3 +107,37 @@ Score: 4 #####
 Crack time: centuries
 guesses_log10: 19.469850039346124
 ```
+
+#### Weak password
+```
+$ pyPasswdGenerator.py -w 2 -l 4 4
+
+password:  HatsTold
+
+length: 8
+
+zxcvbn analysis:
+         _____
+Score: 2 ###
+suggestions:
+	Add another word or two. Uncommon words are better.
+	Capitalization doesn't help very much.
+Crack time: 3 days
+guesses_log10: 6.4126285205443745
+```
+
+#### Very strong password
+```
+$ pyPasswdGenerator.py -w 6 -n 1000 10000 -s '^%$#@'
+
+password:  Weekends6612^Exchange7858%Employ6340$Holmes2071#Counting1320@Mutual
+
+length: 67
+
+zxcvbn analysis:
+         _____
+Score: 4 #####
+Crack time: centuries
+guesses_log10: 53.21987904205257
+```
+
