@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created : Fri 13 Apr 2018 09:46:27 PM EDT
-# Modified: Tue 24 Apr 2018 04:27:19 PM EDT
+# Modified: Tue 24 Apr 2018 04:31:47 PM EDT
 
 import better_exceptions
 
@@ -147,14 +147,14 @@ def main():
     argparser.add_argument(
         "-c",
         "--capitalizeOff",
-        help="turn off capitalization for all words",
+        help="turn off capitalization for all words (def: capitalize each word)",
         default=True,
         action="store_false")
 
     argparser.add_argument(
         "-w",
         "--numberOfWords",
-        help="number of words to use",
+        help="generate a password with N words (def: N=4)",
         default=4,
         type=int,
         choices=range(2, 9))
@@ -162,7 +162,7 @@ def main():
     argparser.add_argument(
         "-n",
         "--numberRange",
-        help="use numbers in the range of M to N-1",
+        help="will add numbers between M and N-1 to between words (def: no numbers)",
         default=[],
         type=int,
         nargs=2)
@@ -170,7 +170,7 @@ def main():
     argparser.add_argument(
         "-l",
         "--wordLengths",
-        help="use words of lengths M to N-1",
+        help="will use words between M and N in length (default M=6, N=8)",
         default=[6, 8],
         type=int,
         nargs=2)
@@ -178,7 +178,7 @@ def main():
     argparser.add_argument(
         "-s",
         "--symbols",
-        help="string of symbols to use between words",
+        help="will add symbol in SYMBOLS between word (def: no symbols)",
         default="")
 
     argparser.add_argument(
