@@ -18,6 +18,8 @@ import sys
 
 from secrets import choice, randbelow
 import argparse
+from zxcvbn import zxcvbn
+import pprint
 
 ### Begin template code -----------------------
 
@@ -123,12 +125,14 @@ def genPasswd(words,
                 num = randNumBetween(nrng)
                 password += str(num)
 
-            if syms: # TODO: up to N-1 syms???  try/except!!!
-                # check that there are enough symbols
-                if len(syms) == numWords - 1:
+            try:
+                if syms: # TODO: up to N-1 syms???
                     password += syms[i]
-                else:
-                    ic('{} not {}'.format(len(syms), numWords - 1))
+            except Exception as e:
+                s = '{} symbols given, {} needed.'.format(len(syms), numWords - 1)
+                ic(s)
+                print(s)
+                raise
 
     return password
 
@@ -185,23 +189,39 @@ def main():
 
     ic(args.filename)
 
-    if args.symbols and len(args.symbols) != args.numberOfWords - 1:
-        print('Error: {} symbols given, {} needed (exiting . . .)'.
-              format(len(args.symbols), args.numberOfWords - 1),
-              file=sys.stderr)
-        sys.exit(0)
-
     with open(args.filename) as f:
-        words = [word.strip() for word in f]
-        password = genPasswd(
-            words,
-            numWords=args.numberOfWords,
-            caps=args.capitalizeOff,
-            syms=args.symbols,
-            nrng=tuple(args.numberRange),
-            wlen=tuple(args.wordLengths))
-        ic(password) # TODO: remove
-        print('\npassword:  {}\nlength: {}'.format(password, len(password)))
+        try:
+            words = [word.strip() for word in f]
+            password = genPasswd(
+                words,
+                numWords=args.numberOfWords,
+                caps=args.capitalizeOff,
+                syms=args.symbols,
+                nrng=tuple(args.numberRange),
+                wlen=tuple(args.wordLengths))
+
+            results = zxcvbn(password)
+            # pp = pprint.PrettyPrinter(indent=4)
+            # pp.pprint(results)
+            
+            print('\npassword:  {}\n\nlength: {}\n'.format(password, len(password)))
+
+            print('zxcvbn analysis:')
+            score = results['score']
+            print('         _____')
+            print('Score: {} {}'.format(score, (score + 1)*'#'))
+            if results['feedback']['suggestions']:
+                print('suggestions:')
+                for s in results['feedback']['suggestions']:
+                    print('\t{}'.format(s))
+            if results['feedback']['warning']:
+                print('warning:\n\t{}'.format(results['feedback']['warning']))
+            print('Crack time: {}'.format(results['crack_times_display']['online_no_throttling_10_per_second']))
+            print('guesses_log10: {}'.format(results['guesses_log10']))
+
+        except Exception as e:
+            ic(repr(e))
+            pass
 
 
 if __name__ == '__main__':
