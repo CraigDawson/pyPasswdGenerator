@@ -9,15 +9,21 @@ Uses https://github.com/dwolfhub/zxcvbn-python to estimate password strength
 
 ### Usage:
 
-`$ pyPasswdGenerator [-h] [-c] [-s syms] [-n M N] [-w N] [-l M N] [wordlist]`
 
-* -h help
-* _-c_ will turn off capitalization of each word (def: capitalize each word)
-* _-s syms_ will add symbols in syms to password between words (def: no symbols)
-* _-n M N_ will add number between M and N-1 to password (def: no numbers)
-* _-w N_ generate a password with N words (def: N=4)
-* _-l M N_ will use words between M and N in length (default M=6, N=8)
-* _wordlist_ will use the file wordlist for the input words
+`$ pyPasswdGenerator.py [-h] [-1] [-5] [-c] [-w {2,3,4,5,6,7,8}] [-n NUMBERRANGE NUMBERRANGE] [-l WORDLENGTHS WORDLENGTHS] [-s SYMBOLS] [filename]`
+
+*  -h, --help            show this help message and exit
+*  -1, --leetModerate    1337 code [Moderate] (def: no leet code)
+*  -5, --leetSimple      1337 code [Simple] (def: no leet code)
+*  -c, --capitalizeOff   turn off capitalization for all words (def: capitalize each word)
+*  -w {2,3,4,5,6,7,8}, --numberOfWords {2,3,4,5,6,7,8}
+*                        generate a password with N words (def: N=4)
+*  -n NUMBERRANGE NUMBERRANGE, --numberRange NUMBERRANGE NUMBERRANGE
+*                        will add numbers between M and N-1 to between words (def: no numbers)
+*  -l WORDLENGTHS WORDLENGTHS, --wordLengths WORDLENGTHS WORDLENGTHS
+*                        will use words between M and N in length (default M=6, N=8)
+*  -s SYMBOLS, --symbols SYMBOLS
+*                        will add symbol in SYMBOLS between word (def: no symbols)
 
 ### Examples:
 
