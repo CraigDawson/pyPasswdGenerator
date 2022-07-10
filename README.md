@@ -17,13 +17,9 @@ Uses https://github.com/dwolfhub/zxcvbn-python to estimate password strength
 *  -5, --leetSimple      1337 code [Simple] (def: no leet code)
 *  -c, --capitalizeOff   turn off capitalization for all words (def: capitalize each word)
 *  -w {2,3,4,5,6,7,8}, --numberOfWords {2,3,4,5,6,7,8}
-*                        generate a password with N words (def: N=4)
 *  -n NUMBERRANGE NUMBERRANGE, --numberRange NUMBERRANGE NUMBERRANGE
-*                        will add numbers between M and N-1 to between words (def: no numbers)
 *  -l WORDLENGTHS WORDLENGTHS, --wordLengths WORDLENGTHS WORDLENGTHS
-*                        will use words between M and N in length (default M=6, N=8)
 *  -s SYMBOLS, --symbols SYMBOLS
-*                        will add symbol in SYMBOLS between word (def: no symbols)
 
 ### Examples:
 
