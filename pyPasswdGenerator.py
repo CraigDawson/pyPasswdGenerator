@@ -1,9 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Created : Fri 13 Apr 2018 09:46:27 PM EDT
-# Modified: Tue 24 Apr 2018 04:31:47 PM EDT
-
-import better_exceptions
+# Modified: Sun 10 Jul 2022 06:14:15 PM EDT
 
 import logging
 from datetime import datetime
@@ -12,14 +10,13 @@ from icecream import ic
 
 import os
 
-### Begin non-template imports -----------------------
+# Begin non-template imports -----------------------
 
 from secrets import choice, randbelow
 import argparse
 from zxcvbn import zxcvbn
-import pprint
 
-### Begin template code -----------------------
+# Begin template code -----------------------
 
 
 def baseUnixTimestamp():
@@ -57,7 +54,7 @@ def baseDebugInfoOut(s):
     global log
 
     log.info(s)
-    #print(s)
+    # print(s)
 
 
 # Configure icecream with time stamp and output to
@@ -67,7 +64,7 @@ ic.configureOutput(prefix=baseUnixTimestamp, outputFunction=baseDebugInfoOut)
 # Create log file that icecream will output to
 log = baseCreateRotatingLog()
 
-### End template code -----------------------
+# End template code -----------------------
 
 
 def randNumBetween(nrange):
@@ -141,8 +138,24 @@ def genPasswd(words,
 
 
 def main():
+    leetSimple = str.maketrans("aelost", "@31057")
+    leetModerate = str.maketrans("abegilopstz", "48361109572")
 
     argparser = argparse.ArgumentParser()
+
+    argparser.add_argument(
+        "-1",
+        "--leetModerate",
+        help="1337 code [Moderate] (def: no leet code)",
+        default=False,
+        action="store_true")
+
+    argparser.add_argument(
+        "-5",
+        "--leetSimple",
+        help="1337 code [Simple] (def: no leet code)",
+        default=False,
+        action="store_true")
 
     argparser.add_argument(
         "-c",
@@ -183,8 +196,7 @@ def main():
 
     argparser.add_argument(
         "filename",
-        help=
-        "word list file (default: google-10000-english-usa-no-swears_modified.txt",
+        help="word list file (default: google-10000-english-usa-no-swears_modified.txt",
         default="google-10000-english-usa-no-swears_modified.txt",
         nargs="?")
 
@@ -202,6 +214,13 @@ def main():
                 syms=args.symbols,
                 nrng=tuple(args.numberRange),
                 wlen=tuple(args.wordLengths))
+
+            if args.leetModerate:
+                print('\npassword:  {}\t(before 1337 [Moderate])'.format(password))
+                password = password.translate(leetModerate)
+            elif args.leetSimple:
+                print('\npassword:  {}\t(before 1337 [Simple])'.format(password))
+                password = password.translate(leetSimple)
 
             results = zxcvbn(password)
             # pp = pprint.PrettyPrinter(indent=4)
